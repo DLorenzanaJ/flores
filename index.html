@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Berenice 🌼</title>
+
+<!-- Google Fonts: Caveat (caligráfica elegante) y Quicksand (redondeada y moderna) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
 /* =========================
    CONFIGURACIÓN GENERAL
@@ -17,7 +23,7 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 body {
@@ -42,69 +48,166 @@ body {
 }
 
 /* =========================
-   NOMBRE
+   NOMBRE (Tipografía Caveat)
 ========================= */
 h1 {
     position: absolute;
     z-index: 30;
-    top: 8%;
+    top: 6%;
     width: 100%;
     margin: 0;
     text-align: center;
     color: #6b4b00;
-    font-size: clamp(42px, 12vw, 82px);
-    text-shadow: 0 3px 8px rgba(255,255,255,.8);
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: clamp(56px, 15vw, 100px);
+    text-shadow: 0 4px 12px rgba(255, 255, 255, 0.9);
     pointer-events: none;
     transition: color 1s ease, text-shadow 1s ease;
 }
 
 .scene.night h1 {
     color: #fff4a8;
-    text-shadow: 0 0 12px #fff2a6, 0 0 25px #ffd83d;
+    text-shadow:
+        0 0 14px rgba(255, 242, 166, 0.9),
+        0 0 32px rgba(255, 216, 61, 0.6);
 }
 
 /* =========================
-   BOTONES
+   BOTÓN DÍA / NOCHE (Glassmorphism)
 ========================= */
-.modeButton, .windButton {
-    position: absolute;
-    z-index: 100;
-    width: 52px;
-    height: 52px;
-    border: none;
-    border-radius: 50%;
-    backdrop-filter: blur(5px);
-    font-size: 25px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,.2);
-    transition: transform .2s ease, background .5s ease;
-}
-
 .modeButton {
+    position: absolute;
     top: 18px;
     right: 18px;
-    background: rgba(255,255,255,.75);
+    z-index: 100;
+    width: 54px;
+    height: 54px;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, background 0.5s ease, border-color 0.5s ease;
 }
 
-.windButton {
-    top: 18px;
-    right: 88px;
-    background: rgba(255,255,255,.75);
-    opacity: 0;
+.modeButton:active {
+    transform: scale(0.85) rotate(15deg);
+}
+
+.scene.night .modeButton {
+    background: rgba(20, 25, 60, 0.65);
+    border-color: rgba(255, 230, 100, 0.3);
+    box-shadow: 0 0 16px rgba(255, 230, 100, 0.2);
+}
+
+/* =========================
+   EFECTOS: PÉTALOS (DÍA)
+========================= */
+.petal {
+    position: absolute;
+    z-index: 8;
     pointer-events: none;
+    user-select: none;
+    opacity: 0.8;
+    animation: petalFall linear infinite;
+    transition: opacity 1s ease;
 }
 
-.windButton.active {
+.scene.night .petal {
+    opacity: 0;
+}
+
+@keyframes petalFall {
+    0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+    }
+    100% {
+        transform: translate3d(80px, 110vh, 0) rotate(360deg);
+    }
+}
+
+/* =========================
+   EFECTOS: LUCIÉRNAGAS (NOCHE)
+========================= */
+.firefly {
+    position: absolute;
+    z-index: 9;
+    width: 6px;
+    height: 6px;
+    background: #ffff80;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ffe600, 0 0 20px #ffea70;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.scene.night .firefly {
     opacity: 1;
-    pointer-events: auto;
+    animation:
+        fireflyFloat 6s ease-in-out infinite alternate,
+        fireflyGlow 2s ease-in-out infinite;
 }
 
-.modeButton:active, .windButton:active {
-    transform: scale(.85) rotate(15deg);
+@keyframes fireflyFloat {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -25px); }
+    100% { transform: translate(-25px, 20px); }
 }
 
-.scene.night .modeButton, .scene.night .windButton {
-    background: rgba(20,25,60,.8);
+@keyframes fireflyGlow {
+    0%, 100% {
+        opacity: 0.3;
+        box-shadow: 0 0 4px #ffe600;
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 16px #ffe600, 0 0 28px #ffffff;
+    }
+}
+
+/* =========================
+   EFECTOS: ESTRELLA FUGAZ (NOCHE)
+========================= */
+.shootingStar {
+    position: absolute;
+    top: 6%;
+    left: 82%;
+    width: 140px;
+    height: 2.5px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    transform: rotate(-35deg);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 6;
+}
+
+.scene.night .shootingStar {
+    animation: shootStar 9s ease-in-out infinite;
+}
+
+@keyframes shootStar {
+    0%, 84% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(-35deg) scale(0.6);
+    }
+    85% {
+        opacity: 1;
+    }
+    90% {
+        transform: translate(-550px, 380px) rotate(-35deg) scale(1);
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 /* =========================
@@ -124,15 +227,214 @@ h1 {
     -webkit-tap-highlight-color: transparent;
     z-index: 10;
     animation: flowerFloat 3s ease-in-out infinite;
-    transition: transform .18s ease, opacity 0.5s ease;
+    transition: transform 0.18s ease;
+}
+
+.flower:active {
+    transform: scale(1.5) rotate(12deg);
 }
 
 .flower.new {
-    animation: flowerAppear .5s ease-out, flowerFloat 3s .5s ease-in-out infinite;
+    animation:
+        flowerAppear 0.5s ease-out,
+        flowerFloat 3s 0.5s ease-in-out infinite;
 }
 
 /* =========================
-   ANIMACIONES
+   FLOR ESPECIAL
+========================= */
+.specialFlower {
+    position: absolute;
+    z-index: 25;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 85px;
+    height: 85px;
+    border: none;
+    background: transparent;
+    font-size: 68px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 12px rgba(255, 210, 40, 0.85));
+    animation: specialFlowerFloat 3s ease-in-out infinite;
+    transition: transform 0.3s ease, filter 0.5s ease;
+}
+
+.specialFlower:active {
+    transform: translate(-50%, -50%) scale(1.4) rotate(15deg);
+}
+
+.scene.night .specialFlower {
+    filter:
+        drop-shadow(0 0 15px #ffe66d)
+        drop-shadow(0 0 35px #ffd21f);
+}
+
+/* =========================
+   MARIPOSAS
+========================= */
+.butterfly {
+    position: absolute;
+    z-index: 20;
+    font-size: 32px;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.18));
+    animation: butterflyFloat 6s ease-in-out infinite;
+    transition: opacity 0.5s ease;
+}
+
+/* =========================
+   ESTRELLAS FIJAS
+========================= */
+.star {
+    position: absolute;
+    z-index: 5;
+    color: white;
+    font-size: 10px;
+    opacity: 0;
+    pointer-events: none;
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.scene.night .star {
+    opacity: 1;
+}
+
+/* =========================
+   LUNA
+========================= */
+.moon {
+    position: absolute;
+    z-index: 4;
+    top: 12%;
+    left: 12%;
+    font-size: 65px;
+    opacity: 0;
+    transform: scale(0.5);
+    filter: drop-shadow(0 0 16px rgba(255, 245, 170, 0.6));
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.scene.night .moon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* =========================
+   MENSAJE (Glassmorphism Refinado)
+========================= */
+.messageBox {
+    position: absolute;
+    z-index: 200;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    width: 85%;
+    max-width: 400px;
+    padding: 34px 28px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.16),
+        0 0 25px rgba(255, 215, 0, 0.25);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.messageBox.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.messageBox h2 {
+    margin: 0 0 10px 0;
+    color: #a87200;
+    font-family: 'Caveat', cursive;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.messageBox p {
+    color: #4a3e29;
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    font-weight: 500;
+}
+
+.closeMessage {
+    padding: 11px 28px;
+    border: none;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ffd747 0%, #ffc107 100%);
+    color: #573e00;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(255, 193, 7, 0.4);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.closeMessage:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+}
+
+/* =========================
+   TEXTO INFERIOR
+========================= */
+.hint {
+    position: absolute;
+    z-index: 30;
+    bottom: 5%;
+    width: 100%;
+    text-align: center;
+    color: #6b4b00;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    transition: color 1s ease;
+}
+
+.scene.night .hint {
+    color: #fff3a1;
+}
+
+/* =========================
+   DESTELLOS Y TOQUE
+========================= */
+.spark {
+    position: absolute;
+    z-index: 50;
+    pointer-events: none;
+    font-size: 22px;
+    animation: sparkAnimation 0.7s ease-out forwards;
+}
+
+.touchEffect {
+    position: absolute;
+    z-index: 40;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.95);
+    animation: touchAnimation 0.6s ease-out forwards;
+}
+
+/* =========================
+   KEYFRAMES BASE
 ========================= */
 @keyframes flowerFloat {
     0%, 100% { margin-top: 0; transform: rotate(-2deg); }
@@ -144,26 +446,151 @@ h1 {
     70% { transform: scale(1.35); opacity: 1; }
     100% { transform: scale(1); opacity: 1; }
 }
+
+@keyframes specialFlowerFloat {
+    0%, 100% { margin-top: 0; transform: translate(-50%, -50%) rotate(-3deg) scale(1); }
+    50% { margin-top: -12px; transform: translate(-50%, -50%) rotate(3deg) scale(1.08); }
+}
+
+@keyframes butterflyFloat {
+    0% { transform: translate(0,0) rotate(-8deg); }
+    20% { transform: translate(25px,-35px) rotate(8deg); }
+    40% { transform: translate(-20px,-65px) rotate(-5deg); }
+    60% { transform: translate(35px,-30px) rotate(7deg); }
+    80% { transform: translate(-15px,15px) rotate(-7deg); }
+    100% { transform: translate(0,0) rotate(-8deg); }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { transform: scale(0.6); opacity: 0.3; }
+    50% { transform: scale(1.5); opacity: 1; }
+}
+
+@keyframes sparkAnimation {
+    0% { transform: translate(0,0) scale(0.4); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(1.2); opacity: 0; }
+}
+
+@keyframes touchAnimation {
+    0% { transform: scale(0.5); opacity: 0.9; }
+    100% { transform: scale(5); opacity: 0; }
+}
 </style>
 </head>
 <body>
+
 <div class="scene" id="scene">
+
+    <!-- =====================
+         NOMBRE
+    ====================== -->
     <h1>Berenice</h1>
-    <button class="modeButton" id="modeButton">🌙</button>
-    <button class="windButton" id="windButton">🍃</button>
+
+    <!-- =====================
+         BOTÓN DÍA / NOCHE
+    ====================== -->
+    <button class="modeButton" id="modeButton" aria-label="Cambiar entre día y noche">
+        🌙
+    </button>
+
+    <!-- =====================
+         LUNA Y ESTRELLA FUGAZ
+    ====================== -->
+    <div class="moon">🌙</div>
+    <div class="shootingStar"></div>
+
+    <!-- =====================
+         ESTRELLAS
+    ====================== -->
+    <div class="star" style="left:8%;top:15%;animation-delay:0.2s;">✦</div>
+    <div class="star" style="left:22%;top:10%;animation-delay:0.8s;">✦</div>
+    <div class="star" style="left:35%;top:20%;animation-delay:1.2s;">✦</div>
+    <div class="star" style="left:52%;top:12%;animation-delay:0.4s;">✦</div>
+    <div class="star" style="left:68%;top:18%;animation-delay:1.5s;">✦</div>
+    <div class="star" style="left:82%;top:11%;animation-delay:0.9s;">✦</div>
+    <div class="star" style="left:92%;top:25%;animation-delay:1.8s;">✦</div>
+    <div class="star" style="left:15%;top:42%;animation-delay:1s;">✦</div>
+    <div class="star" style="left:88%;top:48%;animation-delay:0.6s;">✦</div>
+    <div class="star" style="left:5%;top:70%;animation-delay:1.7s;">✦</div>
+    <div class="star" style="left:30%;top:78%;animation-delay:0.3s;">✦</div>
+    <div class="star" style="left:72%;top:82%;animation-delay:1.3s;">✦</div>
+
+    <!-- =====================
+         MARIPOSAS
+    ====================== -->
+    <div class="butterfly" style="left:12%;top:28%;animation-duration:6s;">🦋</div>
+    <div class="butterfly" style="left:72%;top:35%;animation-duration:7s;animation-delay:1s;">🦋</div>
+    <div class="butterfly" style="left:40%;top:65%;animation-duration:8s;animation-delay:2s;">🦋</div>
+    <div class="butterfly" style="left:82%;top:70%;animation-duration:6.5s;animation-delay:3s;">🦋</div>
+
+    <!-- =====================
+         FLOR ESPECIAL
+    ====================== -->
+    <button class="specialFlower" id="specialFlower" aria-label="Abrir mensaje especial">
+        🌻
+    </button>
+
+    <!-- =====================
+         TEXTO
+    ====================== -->
+    <div class="hint">Toca las flores 🌼</div>
+
+    <!-- =====================
+         MENSAJE ESPECIAL (Card)
+    ====================== -->
+    <div class="messageBox" id="messageBox">
+        <h2>Para ti 💛</h2>
+        <p>Solo quería recordarte que eres importante para mí.</p>
+        <button class="closeMessage" id="closeMessage">Cerrar</button>
+    </div>
+
 </div>
+
 <script>
+(() => {
     /* =========================
        ELEMENTOS
     ========================= */
     const scene = document.getElementById("scene");
     const modeButton = document.getElementById("modeButton");
-    const windButton = document.getElementById("windButton");
+    const specialFlower = document.getElementById("specialFlower");
+    const messageBox = document.getElementById("messageBox");
+    const closeMessage = document.getElementById("closeMessage");
 
     /* =========================
-       FLORES
+       GENERAR PÉTALOS (Día) Y LUCIÉRNAGAS (Noche)
     ========================= */
-    const initialFlowers = [[8,18], [22,30], [78,22], [90,39], [12,55], [31,68], [67,58], [84,72], [48,84], [4,82], [58,34], [38,18]];
+    const petalChars = ["🌸", "🌼", "✨"];
+    for (let i = 0; i < 15; i++) {
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.textContent = petalChars[i % petalChars.length];
+        petal.style.left = `${Math.random() * 100}%`;
+        petal.style.animationDuration = `${6 + Math.random() * 6}s`;
+        petal.style.animationDelay = `${Math.random() * 6}s`;
+        petal.style.fontSize = `${14 + Math.random() * 10}px`;
+        scene.appendChild(petal);
+    }
+
+    for (let i = 0; i < 18; i++) {
+        const firefly = document.createElement("div");
+        firefly.className = "firefly";
+        firefly.style.left = `${5 + Math.random() * 90}%`;
+        firefly.style.top = `${10 + Math.random() * 80}%`;
+        firefly.style.animationDuration = `${4 + Math.random() * 5}s, ${1.5 + Math.random() * 2}s`;
+        firefly.style.animationDelay = `${Math.random() * 4}s, ${Math.random() * 2}s`;
+        scene.appendChild(firefly);
+    }
+
+    /* =========================
+       FLORES INICIALES
+    ========================= */
+    const initialFlowers = [
+        [8,18], [22,30], [78,22], [90,39],
+        [12,55], [31,68], [67,58], [84,72],
+        [48,84], [4,82], [58,34], [38,18]
+    ];
+
     let flowerCount = 0;
     const MAX_FLOWERS = 90;
 
@@ -177,44 +604,114 @@ h1 {
         flower.type = "button";
         flower.className = "flower" + (isNew ? " new" : "");
         flower.textContent = "🌼";
+        flower.setAttribute("aria-label", "Flor amarilla");
         flower.style.left = `calc(${x}% - 26px)`;
         flower.style.top = `calc(${y}% - 26px)`;
         flower.style.animationDelay = `${Math.random() * 1.5}s`;
 
+        flower.addEventListener("click", function(event) {
+            event.stopPropagation();
+            const rect = scene.getBoundingClientRect();
+            const centerX = event.clientX - rect.left;
+            const centerY = event.clientY - rect.top;
+
+            createTouchEffect(centerX, centerY);
+            createParticles(centerX, centerY);
+
+            for (let i = 0; i < 4; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 7 + Math.random() * 9;
+                let newX = x + Math.cos(angle) * distance;
+                let newY = y + Math.sin(angle) * distance;
+                newX = Math.max(4, Math.min(96, newX));
+                newY = Math.max(15, Math.min(94, newY));
+                createFlower(newX, newY, true);
+            }
+        });
+
         scene.appendChild(flower);
         flowerCount++;
-        checkWindButton();
     }
 
     /* =========================
-       LIMPIAR JARDÍN
+       DESTELLOS
     ========================= */
-    function clearGarden() {
-        const userFlowers = document.querySelectorAll(".flower.new");
-        userFlowers.forEach((f, i) => {
-            f.style.opacity = '0';
-            setTimeout(() => { f.remove(); flowerCount--; checkWindButton(); }, 500);
-        });
-    }
-
-    function checkWindButton() {
-        if (flowerCount >= MAX_FLOWERS / 2) { windButton.classList.add("active"); } 
-        else { windButton.classList.remove("active"); }
+    function createParticles(x, y) {
+        for (let i = 0; i < 7; i++) {
+            const spark = document.createElement("span");
+            spark.className = "spark";
+            spark.textContent = i % 2 ? "✨" : "🌼";
+            spark.style.left = `${x - 11}px`;
+            spark.style.top = `${y - 11}px`;
+            spark.style.setProperty("--x", `${Math.cos(i * 0.897) * 65}px`);
+            spark.style.setProperty("--y", `${Math.sin(i * 0.897) * 65}px`);
+            scene.appendChild(spark);
+            setTimeout(() => { spark.remove(); }, 700);
+        }
     }
 
     /* =========================
-       INICIALIZAR Y EVENTOS
+       EFECTO TÁCTIL
     ========================= */
-    initialFlowers.forEach(([x, y]) => createFlower(x, y));
-    modeButton.addEventListener("click", () => { scene.classList.toggle("night"); modeButton.textContent = scene.classList.contains("night") ? "☀️" : "🌙"; });
-    windButton.addEventListener("click", clearGarden);
-    scene.addEventListener("click", (e) => {
-        if (e.target !== scene) return;
-        const rect = scene.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        createFlower(x, y, true);
+    function createTouchEffect(x, y) {
+        const effect = document.createElement("div");
+        effect.className = "touchEffect";
+        effect.style.left = `${x - 9}px`;
+        effect.style.top = `${y - 9}px`;
+        scene.appendChild(effect);
+        setTimeout(() => { effect.remove(); }, 650);
+    }
+
+    /* =========================
+       INICIALIZAR FLORES
+    ========================= */
+    initialFlowers.forEach(([x, y]) => {
+        createFlower(x, y);
     });
+
+    /* =========================
+       TOCAR FONDO
+    ========================= */
+    scene.addEventListener("click", function(event) {
+        if (event.target !== scene) return;
+        if (flowerCount >= MAX_FLOWERS) return;
+
+        const rect = scene.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+        createFlower(x, y, true);
+        createTouchEffect(event.clientX - rect.left, event.clientY - rect.top);
+    });
+
+    /* =========================
+       CAMBIAR DÍA / NOCHE
+    ========================= */
+    modeButton.addEventListener("click", function(event) {
+        event.stopPropagation();
+        scene.classList.toggle("night");
+        modeButton.textContent = scene.classList.contains("night") ? "☀️" : "🌙";
+    });
+
+    /* =========================
+       FLOR ESPECIAL
+    ========================= */
+    specialFlower.addEventListener("click", function(event) {
+        event.stopPropagation();
+        messageBox.classList.add("show");
+        const rect = scene.getBoundingClientRect();
+        createParticles(rect.width / 2, rect.height / 2);
+    });
+
+    /* =========================
+       CERRAR MENSAJE
+    ========================= */
+    closeMessage.addEventListener("click", function(event) {
+        event.stopPropagation();
+        messageBox.classList.remove("show");
+    });
+})();
 </script>
+
 </body>
 </html>
